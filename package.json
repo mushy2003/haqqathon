@@ -1,0 +1,11 @@
+{
+  "name": "haqqathon",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/riz45/haqqathon",
+  "author": "Musawer <mh10012003@live.com>",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^18.3.1"
+  }
+}
