@@ -11,13 +11,13 @@ function App() {
 
 
   const availableDentists = {
-    "General Dentist": [new Dentist("Dr Sammy", "General Dentist", "")],
-    "Pediatric Dentist": [new Dentist("Dr Bob", "Pediatric Dentist", "")],
-    "Orthodontist": [new Dentist("Dr Mark", "Orthodontist", "")],
-    "Periodontist": [new Dentist("Dr Taha", "Periodontist", "")],
-    "Endodontist": [new Dentist("Dr Leonardo", "Endodontist", "")],
-    "Prosthodontist": [new Dentist("Dr Manny", "Prosthodontist", "")],
-    "Cosmetic Dentist": [new Dentist("Dr Rachel", "Cosmetic Dentist", "")]
+    "General Dentist": [new Dentist("Dr Sammy", "General Dentist")],
+    "Pediatric Dentist": [new Dentist("Dr Bob", "Pediatric Dentist")],
+    "Orthodontist": [new Dentist("Dr Mark", "Orthodontist")],
+    "Periodontist": [new Dentist("Dr Taha", "Periodontist")],
+    "Endodontist": [new Dentist("Dr Leonardo", "Endodontist")],
+    "Prosthodontist": [new Dentist("Dr Manny", "Prosthodontist")],
+    "Cosmetic Dentist": [new Dentist("Dr Rachel", "Cosmetic Dentist")]
   };
 
   function extractDentistType(text) {
@@ -97,28 +97,6 @@ function App() {
         </Row>
       </Container>
 
-      {/* <Modal show={showModal} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Analysis Result</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <p>{analysis}</p>
-          {specialist && (
-            <div>
-              <h5>Recommended Specialist:</h5>
-              <p>Name: {specialist.name}</p>
-              <p>Contact: {specialist.contact}</p>
-            </div>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal> */}
-
-
       <Modal
         show={showModal}
         onHide={handleClose}
@@ -144,8 +122,13 @@ function App() {
               <Card.Header as="h5">Recommended Specialist</Card.Header>
               <ListGroup variant="flush">
                 <ListGroup.Item><strong>Name:</strong> {specialist.name}</ListGroup.Item>
-                <ListGroup.Item><strong>Speciality:</strong> {specialist.speciality}</ListGroup.Item>
-                <ListGroup.Item><strong>Contact:</strong> {specialist.contact}</ListGroup.Item>
+                <ListGroup.Item><strong>Speciality:</strong> {specialist.specialty}</ListGroup.Item>
+                <ListGroup.Item>
+                  <strong>Contact:</strong>
+                  <a href={specialist.contact} target="_blank" rel="noopener noreferrer">
+                    {specialist.contact}
+                  </a>
+                </ListGroup.Item>
               </ListGroup>
             </Card>
           )}
