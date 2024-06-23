@@ -6,6 +6,7 @@ import Dentist from './dentist';
 function App() {
   const [analysis, setAnalysis] = useState(null);
   const [specialist, setSpecialist] = useState(null);
+  const [translation, setTranslation] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const webcamRef = useRef(null);
 
@@ -55,9 +56,20 @@ function App() {
       const type = extractDentistType(content)
       const doc = availableDentists[type][0]
 
+      const translate_response = await fetch('http://127.0.0.1:4000/translate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ analysis: content }),
+      });
+
+      const translation_res = await translate_response.json();
+      const trans = translation_res.choices[0].message.content;
 
       setSpecialist(doc);
       setAnalysis(content);
+      setTranslation(trans)
       setShowModal(true);
       // setSpecialist(result.specialist);
     } catch (error) {
@@ -80,6 +92,7 @@ function App() {
             <Card style={{ width: '100%' }}>
               <Card.Body>
                 <Card.Title>Take a photo of your teeth</Card.Title>
+                <Card.Text>Please ensure your teeth are fairly close to the camera for accurate analysis.</Card.Text>
                 <Webcam
                   audio={false}
                   ref={webcamRef}
@@ -114,6 +127,13 @@ function App() {
             <Card className="mb-3">
               <Card.Body>
                 <Card.Text>{analysis}</Card.Text>
+              </Card.Body>
+            </Card>
+          )}
+          {translation && (
+            <Card className="mb-3">
+              <Card.Body>
+                <Card.Text>{translation}</Card.Text>
               </Card.Body>
             </Card>
           )}

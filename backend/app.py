@@ -25,6 +25,46 @@ api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=api_key)
 
 
+@app.route('/translate', methods=['POST'])
+def translate():
+    data = request.get_json()
+    if 'analysis' not in data:
+        return jsonify({"error" : "no analysis provided"}), 400
+
+    analysis = data['analysis']
+    try:
+        translation = translate_text(analysis)
+
+        return jsonify(translation)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+def translate_text(analysis):
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {api_key}"
+    }
+
+    payload = {
+    "model": "gpt-4o",
+    "messages": [
+        {
+        "role": "user",
+        "content": [
+            {
+            "type": "text",
+            "text": f"Provide only an urdu translation, strictly using no extra english words, of the following text: {analysis}"
+            }
+        ]
+        }
+    ],
+    "max_tokens": 300
+    }
+
+    response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload)
+
+    return response.json()
+
 @app.route('/analyze', methods=['POST'])
 def analyze():
     data = request.get_json()
