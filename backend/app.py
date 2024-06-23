@@ -25,15 +25,6 @@ api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=api_key)
 
 
-available_dentists = {"General Dentist" : [Dentist("Dr Sammy", "General Dentist", "")],
-                      "Pediatric Dentist" : [Dentist("Dr Bob", "Pediatric Dentist", "")],
-                      "Orthodontist":[Dentist("Dr Mark", "Orthodontist", "")],
-                      "Periodontist":[Dentist("Dr Taha", "Periodontist", "")],
-                      "Endodontist":[Dentist("Dr Leonardo", "Endodontist", "")],
-                      "Prosthodontist":[Dentist("Dr Manny", "Prosthodontist", "")],
-                      "Cosmetic Dentist": [Dentist("Dr Rachel", "Cosmetic Dentist", "")]}
-
-
 @app.route('/analyze', methods=['POST'])
 def analyze():
     data = request.get_json()
