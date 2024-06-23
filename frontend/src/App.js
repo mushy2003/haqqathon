@@ -26,7 +26,8 @@ function App() {
       }
 
       const result = await response.json();
-      // setAnalysis(result.analysis);
+      const content = result.choices[0].message.content;
+      setAnalysis(content);
       // setSpecialist(result.specialist);
     } catch (error) {
       console.error('Error uploading the image:', error);
@@ -46,13 +47,13 @@ function App() {
         <div>
           <h2>Analysis Result:</h2>
           <p>{analysis}</p>
-          {specialist && (
+          {/* {specialist && (
             <div>
               <h2>Recommended Specialist:</h2>
               <p>Name: {specialist.name}</p>
               <p>Contact: {specialist.contact}</p>
             </div>
-          )}
+          )} */}
         </div>
       )}
     </div>
