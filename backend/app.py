@@ -7,6 +7,7 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 from flask_cors import CORS, cross_origin
+from dentist import Dentist
 
 load_dotenv()
 
@@ -18,12 +19,20 @@ allowed_origins = [
 ]
 
 CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True)
-
-
 # Configure OpenAI API
 api_key = os.getenv("OPENAI_API_KEY")
 
 client = OpenAI(api_key=api_key)
+
+
+available_dentists = {"General Dentist" : [Dentist("Dr Sammy", "General Dentist", "")],
+                      "Pediatric Dentist" : [Dentist("Dr Bob", "Pediatric Dentist", "")],
+                      "Orthodontist":[Dentist("Dr Mark", "Orthodontist", "")],
+                      "Periodontist":[Dentist("Dr Taha", "Periodontist", "")],
+                      "Endodontist":[Dentist("Dr Leonardo", "Endodontist", "")],
+                      "Prosthodontist":[Dentist("Dr Manny", "Prosthodontist", "")],
+                      "Cosmetic Dentist": [Dentist("Dr Rachel", "Cosmetic Dentist", "")]}
+
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
@@ -63,7 +72,7 @@ def analyze_image(base64_image):
         "content": [
             {
             "type": "text",
-            "text": "Based on what you can see of the teeth, are there any issues? Please tell the issues you see."
+            "text": "Based on what you can see of the teeth, are there any issues? Please tell the issues you see. If you are unable to see clearly simply say Unable to see teeth clearly. If there are no issues, say there are no issues."
             },
             {
             "type": "image_url",
@@ -72,6 +81,15 @@ def analyze_image(base64_image):
             }
             }
         ]
+        },
+        {
+        "role": "user",
+        "content": [
+            {
+            "type":"text",
+            "text": "Now based on your previous response of the issues that this person has with their teeth, along with their age being 21 years old, can you suggest what dentist they should visit from the following list: [General Dentist, Pediatric Dentist, Orthodontist, Periodontist, Endodontist, Prosthodontist, Cosmetic Dentist]. Answer in the following format: {The complete answer you gave to the original question I asked before in full detail here}, then {enter a new line here}, Dentist type: {Enter dentist type here} - {Enter explanation why you have chosen that dentist type here}"
+            }
+        ]    
         }
     ],
     "max_tokens": 300
